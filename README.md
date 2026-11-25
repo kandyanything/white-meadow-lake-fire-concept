@@ -37,7 +37,7 @@ The nine partner businesses are invented. They are the sample sponsors from the 
 
 Three photos are in, all supplied from an image search at thumbnail size (about 330 x 220), with their origin unconfirmed: the firehouse, Engine 51 and the lettering on a cab door. They are shown small for that reason: the firehouse sits in a frame under the headline (`hero.framed`), where a full-size photo would fill the whole top of the page (`hero.photo`). Replace them with the company's own full-size originals.
 
-The gear picture in the Join section is computer-generated, and its caption says so. Its back patch reads "Meadow Lake Fire Dept." (no "White") and its sign and truck say "Fire Department", where the company is "Fire Company 5". Regenerate it, or replace it with a photo of the company's own gear.
+The gear picture in the Join section is computer-generated, and its caption says so. Its patch, sign and truck read "White Meadow Lake Fire Dept."; the company's own truck is lettered "White Meadow Lake Co. 5", and the patch is not the company's real one. Replace the picture with a photo of the company's own gear when there is one.
 
 Left out on purpose:
 

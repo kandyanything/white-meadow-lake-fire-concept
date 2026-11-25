@@ -130,10 +130,10 @@ window.SITE = {
        company's own gear. `name` and `zoom` are measured on this picture: see the template README. */
     gear: {
       photo: "images/gear/turnout-gear.jpg", width: 1448, height: 1086,
-      alt: "Two sets of tan turnout gear on stands in an apparatus bay, one seen from the front and one from the back. The back of the coat has a name panel across the shoulders.",
+      alt: "Two sets of tan turnout gear on stands in an apparatus bay, one seen from the front and one from the back. The back of the coat has a name panel across the shoulders and a red cross patch lettered White Meadow Lake Fire Dept.",
       caption: "A computer-generated picture, for layout only. A photo of the company's own gear goes here.",
       namedCaption: "{name}, across the shoulders. A computer-generated picture, for layout only.",
-      name: { blank: "images/gear/name-panel.png", box: [878, 136, 230, 64], arc: "M880 183.5 Q990 158.9 1100 183.5", size: 30, max: 186, color: "#DBC3A7" },
+      name: { blank: "images/gear/name-panel.png", box: [878, 134, 230, 64], arc: "M880 178.4 Q990 161.4 1100 178.4", size: 30, max: 186, color: "#D8C4B1" },
       zoom: [670, 50, 640, 480]
     },
     cta: { label: "Ask about joining", topic: "I want to volunteer" },

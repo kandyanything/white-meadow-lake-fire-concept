@@ -67,7 +67,6 @@ window.SITE = {
     drill: "",
     meeting: "",
     extra: [["Fire headquarters (applications)", "973-983-2865"]],
-    photo: "images/photos/firehouse.jpg", photoAlt: "The firehouse at 1 Pawnee Avenue",
     mapLink: "https://www.google.com/maps/search/?api=1&query=1+Pawnee+Ave%2C+Rockaway%2C+NJ+07866",
     social: [
       { label: "Facebook", url: "https://www.facebook.com/p/White-Meadow-Lake-Fire-Company-5-100057396461612/" },
@@ -82,6 +81,9 @@ window.SITE = {
   hero: {
     photo: "",
     photoAlt: "",
+    /* A small photo shown in a frame under the headline, for when the only picture on hand is too
+       small to fill the screen. A full-size photo goes in `photo` above instead and fills the hero. */
+    framed: { src: "images/photos/firehouse-hero.jpg", alt: "The firehouse: a long brick building with a brown shingle roof and four white bay doors", caption: "The firehouse at 1 Pawnee Avenue" },
     title: "When the tones drop, your neighbors go.",
     text: "{company} is one of the five volunteer companies of the Rockaway Township Fire Department, based on Pawnee Avenue.",
     primary: { label: "Become a volunteer", href: "#join" },

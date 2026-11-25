@@ -70,6 +70,11 @@
     if (h.photo) return '<section class="hero hero--photo" id="top" aria-labelledby="hero-h"><img class="hero-img" src="' + esc(h.photo) + '" alt="' + esc(h.photoAlt || '') + '"><div class="hero-shade"></div>' + sparks('hero') +
       '<div class="hero-copy wrap"><h1 id="hero-h">' + esc(h.title) + '</h1><p>' + esc(h.text) + '</p>' +
       '<div class="hero-cta"><a class="btn btn--gold" href="' + h.primary.href + '">' + esc(h.primary.label) + '</a><a class="btn btn--ghost" href="' + h.secondary.href + '">' + esc(h.secondary.label) + '</a></div></div>' + (motionOn() ? stillButton('hero-pause') : '') + '</section>';
+    if (h.framed && h.framed.src) return '<section class="hero hero--framed" id="top" aria-labelledby="hero-h">' + sparks('hero') +
+      '<div class="hero-copy wrap"><h1 id="hero-h">' + esc(h.title) + '</h1><p>' + esc(h.text) + '</p>' +
+      '<div class="hero-cta"><a class="btn btn--gold" href="' + h.primary.href + '">' + esc(h.primary.label) + '</a><a class="btn btn--ghost" href="' + h.secondary.href + '">' + esc(h.secondary.label) + '</a></div></div>' +
+      '<figure class="hero-frame"><img src="' + esc(h.framed.src) + '" alt="' + esc(h.framed.alt || '') + '">' + (h.framed.caption ? '<figcaption>' + esc(h.framed.caption) + '</figcaption>' : '') + '</figure>' +
+      (motionOn() ? stillButton('hero-pause') : '') + '</section>';
     return '<section class="hero' + (state.first ? '' : ' no-intro') + (state.still ? ' is-still' : '') + '" id="top" aria-labelledby="hero-h">' +
       '<div class="hero-copy wrap"><h1 id="hero-h">' + esc(h.title) + '</h1><p>' + esc(h.text) + '</p>' +
       '<div class="hero-cta"><a class="btn btn--gold" href="' + h.primary.href + '">' + esc(h.primary.label) + '</a><a class="btn btn--ghost" href="' + h.secondary.href + '">' + esc(h.secondary.label) + '</a></div></div>' +

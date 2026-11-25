@@ -99,7 +99,7 @@ window.SITE = {
       { src: "images/hero/boat-launch-sunset.jpg", alt: "Engine 52 and Engine 51 at the lake's boat launch at sunset, with members at the water's edge", pos: "50% 58%" },
       { src: "images/hero/drill-at-dusk.jpg", alt: "Members gathered around Engine 51 at the boat launch at dusk", pos: "50% 56%" }
     ],
-    title: "When the tones drop, your neighbors go.",
+    title: "When the alarm sounds, your neighbors go.",
     text: "{company} is one of the five volunteer companies of the Rockaway Township Fire Department, based on Pawnee Avenue.",
     primary: { label: "Become a volunteer", href: "#join" },
     secondary: { label: "Support the company", href: "#support" }
@@ -157,7 +157,7 @@ window.SITE = {
       { title: "Stop by", text: "Visit the firehouse at 1 Pawnee Avenue and meet the members." },
       { title: "Apply", text: "Call fire headquarters at 973-983-2865 for an application, or download it from the township's website." },
       { title: "Train", text: "Complete the required firefighter training course." },
-      { title: "Answer alarms", text: "Come to the scheduled meetings and drills, and respond when the tones drop." }
+      { title: "Answer alarms", text: "Come to the scheduled meetings and drills, and respond when a call comes in." }
     ],
     roles: [
       { label: "Engine", color: "#B3191F", title: "Engine company", text: "The crews of Engine 51 and Engine 52: hose lines, water supply and search." },

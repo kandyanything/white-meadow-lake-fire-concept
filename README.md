@@ -61,4 +61,4 @@ Everything is set in `data/site.js`. Photo slots work the same way as in the Lar
 
 ## Hosting
 
-`wrangler.toml` serves this folder as a Cloudflare Worker named `wml-fire-co5-concept`, so the address itself says "concept". `_headers` and `robots.txt` keep search engines out. Leave the concept labels in place for as long as the link is live.
+`wrangler.toml` serves this folder as a Cloudflare Worker named `white-meadow-lake-fire-concept`, so the address itself says "concept". Every push to `main` publishes to https://white-meadow-lake-fire-concept.kandyanything.workers.dev. `_headers` and `robots.txt` keep search engines out. Leave the concept labels in place for as long as the link is live.

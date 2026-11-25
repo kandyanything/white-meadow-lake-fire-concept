@@ -18,38 +18,29 @@ Keep all of that in place until the company has bought the site and supplied its
 | Content | Source |
 |---|---|
 | Company name, parent department, the five companies | Rockaway Township code; township "Become a Firefighter" page |
-| 2026 line and association officers | Rockaway Township 2026 fire officer roster |
+| The patch | Cut out of the company's own heat-readiness flyer. Ask for the original artwork. |
+| 2027 company, department and association officers | The company's "2027 Fire Officers" announcement |
+| Photos (hero, rigs, gallery) | The company's public posts, supplied as image files |
+| Engine 52, the water and ice rescue unit, the rescue boat | Seen and lettered in those photos. Years and specifications still needed. |
 | Firehouse address and phone | Business directory listing. **Confirm both with the company.** |
 | Engine 51 | 1st Responder News, July 27, 2023 |
 | Three calls and the news items | WRNJ Radio (June 11, 2026 and Dec. 22, 2025) and a Dec. 2025 report on the Circle Avenue fire |
 | How to join | Township "Become a Firefighter" page |
 | Lake history entry | White Meadow Lake Property Owners Association history page |
 
-The treasurer appears as "Brain McCormack" on the 2026 roster and "Brian McCormack" on the 2025 one. The site uses Brian. Confirm.
+The photo of the firehouse shows older trucks than the ones in service now.
 
 ## What is a placeholder
 
-Call totals, the events list, the fund drive, the partner program and its prices, drill and meeting nights, the founding entry in the history, the emblem (a generic cross with a 5) and the drawings.
+Call totals, the events list, the fund drive, the partner program and its prices, drill and meeting nights, the founding entry in the history and the chief officer's message.
 
 The nine partner businesses are invented. They are the sample sponsors from the Larkin Mills demo, with one renamed (Sawmill Road Lumber). None is a real sponsor of the company.
 
-## Photos
-
-Three photos are in, all supplied from an image search at thumbnail size (about 330 x 220), with their origin unconfirmed: the firehouse, Engine 51 and the lettering on a cab door. They are shown small for that reason: the firehouse sits in a frame under the headline (`hero.framed`), where a full-size photo would fill the whole top of the page (`hero.photo`). Replace them with the company's own full-size originals.
-
-The gear picture in the Join section is computer-generated, and its caption says so. Its patch, sign and truck read "White Meadow Lake Fire Dept."; the company's own truck is lettered "White Meadow Lake Co. 5", and the patch is not the company's real one. Replace the picture with a photo of the company's own gear when there is one.
-
-Left out on purpose:
-
-- Two truck photos that carry a photographer's copyright notice.
-- A logo that reads "Meadow Lake Fire Dept.", which is a different department.
-- A group photo, a Santa photo and a house fire photo, until it is confirmed they are this company's.
-
-Nothing was read from the company's Facebook or Instagram: those pages block automated reading.
+The gear picture in the Join section is computer-generated, and its caption says so. Its patch, sign and truck read "White Meadow Lake Fire Dept."; the company's own truck is lettered "White Meadow Lake Co. 5", and the patch on it is not the company's real one. Replace the picture with a photo of the company's own gear when there is one.
 
 ## Assets to collect
 
-- The company's patch or logo
+- The patch as original artwork (the one in use is cut from a flyer)
 - Photos: the firehouse, Engine 51 and the rest of the fleet, members, a drill, an event
 - The full apparatus list
 - Drill night and meeting night

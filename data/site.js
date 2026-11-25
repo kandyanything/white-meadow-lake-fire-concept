@@ -7,7 +7,8 @@
    WHERE EACH FACT CAME FROM
    - Name, parent department, the five companies: Rockaway Township code and
      the township's "Become a Firefighter" page.
-   - Officers: Rockaway Township's 2026 fire officer roster.
+   - Officers: the company's own "2027 Fire Officers" announcement.
+   - Patch and photos: the company's public posts, supplied as image files.
    - Firehouse address and phone: a business directory listing. CONFIRM both.
    - Engine 51: 1st Responder News, July 2023.
    - The three calls and the two news items: WRNJ Radio and other local news.
@@ -25,7 +26,8 @@ window.SITE = {
   shortTemplate: "{town} Fire Co. 5",
   tagline: "Rockaway Township Fire Department, Company 5",
 
-  /* Placeholder emblem (the fire-service cross with the company number). Replace with the company's own patch. */
+  /* The company's own patch, cut out of its heat-readiness flyer. Ask the company for the original artwork. */
+  emblemImage: "images/brand/patch.png",
   emblemBottom: "Fire Company",
   shieldMark: "WML 5",
   coatLine: "Fire Co. 5",
@@ -52,7 +54,6 @@ window.SITE = {
       events: "Placeholder dates, events and sponsors. The news items are real, from local reports.",
       support: "A placeholder fund drive. No payment is taken on this page.",
       partners: "A proposed partner program. The businesses are invented and the prices are examples.",
-      photos: "Three small photos found in an image search. Full-size originals from the company will replace them.",
       history: "The company's own history goes here. The founding entry is a placeholder.",
       safety: "General fire safety advice, to be reviewed by the company."
     }
@@ -79,11 +80,14 @@ window.SITE = {
   alert: { active: false, text: "", link: null },
 
   hero: {
-    photo: "",
-    photoAlt: "",
-    /* A small photo shown in a frame under the headline, for when the only picture on hand is too
-       small to fill the screen. A full-size photo goes in `photo` above instead and fills the hero. */
-    framed: { src: "images/photos/firehouse-hero.jpg", alt: "The firehouse: a long brick building with a brown shingle roof and four white bay doors", caption: "The firehouse at 1 Pawnee Avenue" },
+    /* Three of the company's own photos, cross-fading every `slideSeconds`. `pos` sets which part
+       of each photo stays in view when the screen crops it. */
+    slideSeconds: 7,
+    slides: [
+      { src: "images/hero/firehouse.jpg", alt: "The firehouse on Pawnee Avenue with the company's trucks and rescue boat parked in front", pos: "50% 48%" },
+      { src: "images/hero/boat-launch-sunset.jpg", alt: "Engine 52 and Engine 51 at the lake's boat launch at sunset, with members at the water's edge", pos: "50% 58%" },
+      { src: "images/hero/drill-at-dusk.jpg", alt: "Members gathered around Engine 51 at the boat launch at dusk", pos: "50% 56%" }
+    ],
     title: "When the tones drop, your neighbors go.",
     text: "{company} is one of the five volunteer companies of the Rockaway Township Fire Department, based on Pawnee Avenue.",
     primary: { label: "Become a volunteer", href: "#join" },
@@ -145,8 +149,8 @@ window.SITE = {
       { title: "Answer alarms", text: "Come to the scheduled meetings and drills, and respond when the tones drop." }
     ],
     roles: [
-      { label: "Engine", color: "#B3191F", title: "Engine company", text: "The crew of Engine 51: hose lines, water supply and search." },
-      { label: "Ice", color: "#1D4E89", title: "Ice rescue", text: "A trained team for the lake in winter, led by the ice rescue coordinator." },
+      { label: "Engine", color: "#B3191F", title: "Engine company", text: "The crews of Engine 51 and Engine 52: hose lines, water supply and search." },
+      { label: "Rescue", color: "#1D4E89", title: "Ice and water rescue", text: "A trained team for the lake, with its own rescue unit and boat." },
       { label: "Assoc.", color: "#E9B949", title: "The association", text: "The president, secretary and treasurer run the company's business side." }
     ],
     faq: [
@@ -159,34 +163,42 @@ window.SITE = {
 
   apparatus: {
     title: "The rigs",
-    text: "What rolls out of the Pawnee Avenue firehouse.",
-    fleet: "The rest of the fleet will be added from the company's own list.",
+    text: "What rolls out of the Pawnee Avenue firehouse, and onto the lake.",
+    fleet: "Years and specifications for Engine 52, the rescue unit and the boat will come from the company.",
     rigs: [
-      { type: "engine", photo: "images/photos/engine-51.jpg", photoRatio: "948 / 362", code: "E", name: "Engine 51", kind: "2023 Pierce Impel XM pumper", text: "Delivered in 2023, with a top-mounted pump panel and a raised-roof cab.", specs: [["Pump", "2,000 gallons a minute"], ["Water on board", "1,000 gallons"], ["Seats", "8 firefighters"], ["In service", "2023"]] }
+      { type: "engine", photo: "images/rigs/engine-51.jpg", code: "E", name: "Engine 51", kind: "2023 Pierce Impel XM pumper", text: "Shown drafting water from White Meadow Lake. Delivered in 2023, with a top-mounted pump panel and a raised-roof cab.", specs: [["Pump", "2,000 gallons a minute"], ["Water on board", "1,000 gallons"], ["Seats", "8 firefighters"], ["In service", "2023"]] },
+      { type: "engine", photo: "images/rigs/engine-52.jpg", code: "E", name: "Engine 52", kind: "Seagrave pumper", text: "The company's second engine, here at the boat launch with Engine 51.", specs: [["Make", "Seagrave"], ["Unit", "E-52"]] },
+      { type: "rescue", photo: "images/rigs/water-ice-rescue-unit.jpg", plate: "Ice", tab: "Water and ice rescue", code: "R", name: "Water and Ice Rescue Unit", kind: "Rescue truck", text: "The truck that carries the team and its equipment to calls on the water and the ice.", specs: [["Role", "Water and ice rescue"], ["Led by", "Ice/water rescue coordinator"]] },
+      { type: "rescue", photo: "images/rigs/rescue-boat.jpg", plate: "Boat", tab: "Rescue boat", code: "M", name: "Rescue boat", kind: "Marked Water 5 Rescue", text: "A crew of four on White Meadow Lake.", specs: [["Role", "Water rescue on the lake"]] }
     ]
   },
 
   officers: {
     title: "Company officers",
-    text: "The 2026 officers, as listed by Rockaway Township.",
+    text: "The 2027 officers, as announced by the company.",
     portraits: "initials",
     chief: {
-      rank: "Company Chief", name: "Mike Hafley",
-      placeholder: "A short message from the chief goes here, in his own words."
+      rank: "Assistant Fire Chief", name: "Eric Sarrel",
+      placeholder: "A short message from the company's chief officer goes here, in his own words."
     },
     line: [
-      { rank: "Fire Captain", name: "Eric Sarrel" },
-      { rank: "Fire Lieutenant", name: "Scott Lovenberg" },
-      { rank: "Fire Lieutenant", name: "Dan McDonald" },
-      { rank: "Ice Rescue Coordinator", name: "Joel Sanchez" }
+      { rank: "Fire Captain", name: "Scott Lovenberg" },
+      { rank: "Fire Lieutenant", name: "Daniel McDonald" },
+      { rank: "Fire Lieutenant", name: "Daniel Lovenberg" },
+      { rank: "Ice/Water Rescue Coordinator", name: "Jack Albert" }
     ],
     captains: [],
+    deptTitle: "Department officers",
+    dept: [
+      { rank: "Chief of Department", name: "Randy Miller" },
+      { rank: "Deputy Fire Chief", name: "Brian McCormack" }
+    ],
     adminTitle: "Association officers",
     admin: [
       { rank: "President", name: "Tom Garvey" },
       { rank: "Vice President", name: "Mark Keck" },
-      { rank: "Secretary", name: "Kyle Yelavich" },
-      { rank: "Treasurer", name: "Brian McCormack" }
+      { rank: "Treasurer", name: "Brian McCormack" },
+      { rank: "Secretary", name: "Kyle Yelavich" }
     ]
   },
 
@@ -250,14 +262,15 @@ window.SITE = {
     ]
   },
 
-  /* Photos supplied from an image search, at thumbnail size and with their origin unconfirmed.
-     Replace them with the company's own full-size originals. `strip: true` shows them small, in a row. */
+  /* The company's own photos. The first one is shown large. */
   gallery: {
-    title: "Around the firehouse", strip: true,
+    title: "On the job and off",
     items: [
-      { src: "images/photos/firehouse.jpg", alt: "The firehouse: a long brick building with a brown shingle roof and four white bay doors", caption: "The firehouse on Pawnee Avenue" },
-      { src: "images/photos/engine-51.jpg", alt: "Engine 51, a red and white Pierce pumper lettered White Meadow Lake Co. 5", caption: "Engine 51" },
-      { src: "images/photos/engine-door.jpg", alt: "Gold-leaf lettering on a red cab door reading White Meadow Lake Co. 5", caption: "Gold leaf on the cab door" }
+      { src: "images/photos/house-fire-rear.jpg", alt: "A firefighter directs a hose stream onto a burning house from the back yard", caption: "Working a house fire from the rear" },
+      { src: "images/photos/house-fire-aerial.jpg", alt: "Smoke rising from a house fire, seen from above, with an engine in the street", caption: "A working fire from the air" },
+      { src: "images/photos/color-guard.jpg", alt: "Members in dress uniform carry the company flag and the American flag", caption: "The color guard" },
+      { src: "images/photos/hose-line.jpg", alt: "A firefighter aims a hose stream into heavy smoke", caption: "On the hose line" },
+      { src: "images/photos/company-dinner.jpg", alt: "About twenty members in dress uniform gathered on a staircase", caption: "The company, dressed for dinner" }
     ]
   },
 
@@ -280,6 +293,6 @@ window.SITE = {
   footer: {
     builtBy: "",
     status: "",
-    sample: "Website concept prepared for White Meadow Lake Fire Company 5. This is not the company's official website. Officer names, the firehouse address and the news items come from public sources. The partner businesses are invented. Items tagged Sample are placeholders."
+    sample: "Website concept prepared for White Meadow Lake Fire Company 5. This is not the company's official website. The patch, the photos and the officer names come from the company's public posts; the address and news items from other public sources. The partner businesses are invented, and the gear picture in the Join section is computer-generated. Items tagged Sample are placeholders."
   }
 };

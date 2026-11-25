@@ -5,7 +5,7 @@
   var A = window.FireArt, RAW = window.SITE, esc = A.esc, I = A.icon;
   var app = document.getElementById('app');
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var state = { rig: 0, station: 0, ad: 0, adPaused: reduced, first: true, coat: '', amount: null, still: false, zoom: false };
+  var state = { rig: 0, station: 0, ad: 0, adPaused: reduced, first: true, coat: '', amount: null, still: false, zoom: false, slide: 0 };
   var S, FX = window.FireFX;
   try { state.still = window.localStorage.getItem('fx-still') === '1'; } catch (e) { /* storage can be blocked: start with motion on */ }
 
@@ -51,6 +51,7 @@
   function topicLink(label, topic, cls) { return '<a class="' + (cls || 'link') + '" href="#contact" data-topic="' + esc(topic) + '">' + esc(label) + '</a>'; }
 
   /* ---------- sections ---------- */
+  function emblem() { return S.emblemImage ? '<img class="art art-emblem" src="' + esc(S.emblemImage) + '" alt="">' : A.emblem(S); }
   function header() {
     var nav = [['Join', '#join']].concat(S.stations && S.stations.items && S.stations.items.length ? [['Stations', '#stations']] : [], [['Apparatus', '#apparatus'], ['Officers', '#officers'], ['Safety', '#safety'], ['Events', '#events'], ['Support us', '#support'], ['Contact', '#contact']]);
     return (S.sampleBanner ? '<div class="sample-bar"><div class="wrap">' + esc(S.sampleBanner) + '</div></div>' : '') +
@@ -59,7 +60,7 @@
       '<button type="button" data-open="members">' + I('lock') + 'Members</button></div></div></div>' +
       (S.alert && S.alert.active ? '<div class="alert" role="status"><div class="wrap">' + I('burn') + '<p>' + esc(S.alert.text) + (S.alert.link ? ' <a href="' + esc(S.alert.link.href) + '">' + esc(S.alert.link.label) + '</a>' : '') + '</p></div></div>' : '') +
       '<header class="site-header"><div class="wrap">' +
-      '<a class="brand" href="#top">' + A.emblem(S) + '<span><b>' + esc(S.company) + '</b><span>' + esc(S.tagline) + '</span></span></a>' +
+      '<a class="brand" href="#top">' + emblem() + '<span><b>' + esc(S.company) + '</b><span>' + esc(S.tagline) + '</span></span></a>' +
       '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">' + I('menu') + 'Menu</button>' +
       '<nav class="nav" id="nav" aria-label="Main">' + nav.map(function (n) { return '<a href="' + n[1] + '">' + n[0] + '</a>'; }).join('') +
       '<a class="btn btn--small" href="#support">Donate</a></nav></div></header>';
@@ -67,7 +68,13 @@
 
   function hero() {
     var h = S.hero;
-    if (h.photo) return '<section class="hero hero--photo" id="top" aria-labelledby="hero-h"><img class="hero-img" src="' + esc(h.photo) + '" alt="' + esc(h.photoAlt || '') + '"><div class="hero-shade"></div>' + sparks('hero') +
+    var slides = h.slides && h.slides.length ? h.slides : (h.photo ? [{ src: h.photo, alt: h.photoAlt }] : null);
+    if (slides) state.slide = Math.min(state.slide, slides.length - 1);
+    /* Only the first photo loads with the page; the rest are fetched a moment later (see render). */
+    if (slides) return '<section class="hero hero--photo" id="top" aria-labelledby="hero-h"><div class="hero-media">' + slides.map(function (x, i) {
+        var on = i === state.slide;
+        return '<img class="hero-img' + (on ? ' is-on' : '') + '" ' + (on || !state.first ? 'src' : 'data-src') + '="' + esc(x.src) + '" alt="' + esc(x.alt || '') + '"' + (x.pos ? ' style="object-position:' + esc(x.pos) + '"' : '') + (on ? '' : ' aria-hidden="true"') + '>';
+      }).join('') + '</div><div class="hero-shade"></div>' + sparks('hero') +
       '<div class="hero-copy wrap"><h1 id="hero-h">' + esc(h.title) + '</h1><p>' + esc(h.text) + '</p>' +
       '<div class="hero-cta"><a class="btn btn--gold" href="' + h.primary.href + '">' + esc(h.primary.label) + '</a><a class="btn btn--ghost" href="' + h.secondary.href + '">' + esc(h.secondary.label) + '</a></div></div>' + (motionOn() ? stillButton('hero-pause') : '') + '</section>';
     if (h.framed && h.framed.src) return '<section class="hero hero--framed" id="top" aria-labelledby="hero-h">' + sparks('hero') +
@@ -205,7 +212,7 @@
     var a = S.apparatus;
     return '<section class="band" id="apparatus" aria-labelledby="app-h"><div class="wrap"><div class="head"><h2 id="app-h">' + esc(a.title) + '</h2><p class="lede">' + esc(a.text) + '</p></div>' +
       '<div class="rig-tabs" role="tablist" aria-label="Apparatus">' + a.rigs.map(function (r, i) {
-        return '<button class="rig-tab" type="button" role="tab" id="rig-tab-' + i + '" aria-controls="rig-panel" aria-selected="' + (i === state.rig) + '" tabindex="' + (i === state.rig ? 0 : -1) + '" data-rig="' + i + '"><span class="plate">' + esc(r.code + ((r.name.match(/\d+$/) || [S.station])[0])) + '</span>' + esc(r.name.replace(/\s*\d+$/, '')) + '</button>';
+        return '<button class="rig-tab" type="button" role="tab" id="rig-tab-' + i + '" aria-controls="rig-panel" aria-selected="' + (i === state.rig) + '" tabindex="' + (i === state.rig ? 0 : -1) + '" data-rig="' + i + '"><span class="plate">' + esc(r.plate || (r.code + ((r.name.match(/\d+$/) || [S.station])[0]))) + '</span>' + esc(r.tab || r.name.replace(/\s*\d+$/, '')) + '</button>';
       }).join('') + '</div><div id="rig-panel" role="tabpanel" aria-labelledby="rig-tab-' + state.rig + '">' + rigPanel() + '</div>' + (a.fleet ? '<p class="fleet">' + esc(a.fleet) + '</p>' : '') + '</div></section>';
   }
 
@@ -237,6 +244,7 @@
       chief(o.chief) +
       '<ul class="people">' + o.line.map(person).join('') + '</ul>' +
       (o.captains && o.captains.length ? '<h3 class="people-sub">' + esc(o.captainsTitle || 'Station captains') + '</h3><ul class="captains">' + o.captains.map(function (c) { return '<li><span>' + esc(c.station) + '</span><strong>' + esc(c.name) + '</strong></li>'; }).join('') + '</ul>' : '') +
+      (o.dept && o.dept.length ? '<h3 class="people-sub">' + esc(o.deptTitle || 'Department officers') + '</h3><ul class="people people--admin">' + o.dept.map(person).join('') + '</ul>' : '') +
       (o.admin && o.admin.length ? '<h3 class="people-sub">' + esc(o.adminTitle || 'Company officers') + '</h3><ul class="people people--admin">' + o.admin.map(person).join('') + '</ul>' : '') + '</div></section>';
   }
 
@@ -332,7 +340,7 @@
   function footer() {
     var c = S.contact;
     return '<footer class="site-footer">' + sparks('night') + '<div class="wrap"><div class="foot-grid">' +
-      '<div class="foot-brand">' + A.emblem(S) + '<div><b>' + esc(S.company) + '</b><p>' + esc(c.address) + ', ' + esc(c.cityLine) + '<br>' + esc(c.nonEmergency) + '</p></div></div>' +
+      '<div class="foot-brand">' + emblem() + '<div><b>' + esc(S.company) + '</b><p>' + esc(c.address) + ', ' + esc(c.cityLine) + '<br>' + esc(c.nonEmergency) + '</p></div></div>' +
       '<div class="foot-col"><h3>The company</h3><ul><li><a href="#join">Join</a></li>' + (S.stations && S.stations.items && S.stations.items.length ? '<li><a href="#stations">Stations</a></li>' : '') + '<li><a href="#apparatus">Apparatus</a></li><li><a href="#officers">Officers</a></li><li><a href="#history">History</a></li></ul></div>' +
       '<div class="foot-col"><h3>For residents</h3><ul><li><a href="#safety">Fire safety</a></li><li><a href="#events">Events</a></li><li><a href="#support">Donate</a></li><li><a href="#partners">Partners</a></li></ul></div>' +
       '<div class="foot-col"><h3>Follow and sign in</h3><ul>' + c.social.map(function (s) { return '<li><a href="' + esc(s.url) + '">' + esc(s.label) + '</a></li>'; }).join('') + '<li><button type="button" data-open="members">Members\' area</button></li></ul></div></div>' +
@@ -375,6 +383,7 @@
     theme();
     app.innerHTML = header() + '<main id="main">' + hero() + partnerBanner() + tasks() + stations() + calls() + join() + apparatus() + officers() + safety() + events() + support() + partners() + gallery() + history() + contact() + '</main>' + footer() + mobileBar() + membersDialog();
     jsonLd();
+    setTimeout(function () { app.querySelectorAll('.hero-img[data-src]').forEach(function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); }); }, 1500);
     conceptMarks();
     fitGearName();
     state.first = false;
@@ -476,6 +485,15 @@
 
   render();
   if (RAW.templateControls !== false) controls();
+  /* cross-fade the hero photos; "Pause motion" and reduced-motion both hold the current one */
+  setInterval(function () {
+    var imgs = app.querySelectorAll('.hero-media .hero-img');
+    if (imgs.length < 2 || state.still || reduced || document.hidden) return;
+    var next = (state.slide + 1) % imgs.length;
+    if (imgs[next].hasAttribute('data-src') || !imgs[next].complete) return;
+    state.slide = next;
+    imgs.forEach(function (im, i) { im.classList.toggle('is-on', i === next); if (i === next) im.removeAttribute('aria-hidden'); else im.setAttribute('aria-hidden', 'true'); });
+  }, ((RAW.hero && RAW.hero.slideSeconds) || 7) * 1000);
   setInterval(function () {
     if (state.adPaused || document.hidden) return;
     var frame = app.querySelector('.pb-frame'); if (!frame || frame.matches(':hover') || frame.contains(document.activeElement)) return;

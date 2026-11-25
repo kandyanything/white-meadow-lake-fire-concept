@@ -293,6 +293,20 @@
     return '<nav class="mbar" aria-label="Quick actions"><a href="tel:' + esc(S.contact.nonEmergency.replace(/[^0-9]/g, '')) + '">' + I('phone') + 'Call station</a><a href="#join">' + I('ladder') + 'Join</a><a href="#support">' + I('heart') + 'Donate</a></nav>';
   }
 
+  /* The first-visit welcome (js/welcome.js). Shown once per visitor; `force` plays it again. */
+  function welcome(force) {
+    var w = S.welcome, FW = window.FireWelcome;
+    if (!w || w.on === false || !FW) return;
+    var key = 'welcome-seen:' + (w.id || 'v1'), seen = false;
+    try { seen = window.localStorage.getItem(key) === '1'; } catch (e) { /* storage blocked: show it */ }
+    if (seen && !force) return;
+    FW.open({
+      badge: emblem(), title: esc(w.title), text: esc(w.text || ''), button: esc(w.button || 'Take a look around'), still: state.still,
+      links: (w.links || []).map(function (l) { return { href: esc(l.href), label: esc(l.label) }; }),
+      note: S.concept ? esc(S.concept.badge + '. ' + S.concept.badgeNote) : esc(w.note || ''),
+      onClose: function () { try { window.localStorage.setItem(key, '1'); } catch (e) { /* it will show again next visit */ } }
+    });
+  }
   function conceptMarks() {
     var c = S.concept, old = document.getElementById('concept-badge');
     if (old) old.remove();
@@ -344,7 +358,7 @@
       '<div class="foot-col"><h3>The company</h3><ul><li><a href="#join">Join</a></li>' + (S.stations && S.stations.items && S.stations.items.length ? '<li><a href="#stations">Stations</a></li>' : '') + '<li><a href="#apparatus">Apparatus</a></li><li><a href="#officers">Officers</a></li><li><a href="#history">History</a></li></ul></div>' +
       '<div class="foot-col"><h3>For residents</h3><ul><li><a href="#safety">Fire safety</a></li><li><a href="#events">Events</a></li><li><a href="#support">Donate</a></li><li><a href="#partners">Partners</a></li></ul></div>' +
       '<div class="foot-col"><h3>Follow and sign in</h3><ul>' + c.social.map(function (s) { return '<li><a href="' + esc(s.url) + '">' + esc(s.label) + '</a></li>'; }).join('') + '<li><button type="button" data-open="members">Members\' area</button></li></ul></div></div>' +
-      '<div class="foot-legal"><p class="foot-911">In an emergency, call 911. This website is not monitored.</p><p>&copy; ' + new Date().getFullYear() + ' ' + esc(S.company) + '.' + (S.footer.status === undefined ? ' A 501(c)(3) nonprofit.' : (S.footer.status ? ' ' + esc(S.footer.status) : '')) + (S.footer.builtBy ? ' ' + esc(S.footer.builtBy) : '') + '</p><p>' + esc(S.footer.sample) + '</p>' + (motionOn() ? '<p>' + stillButton('foot-still') + '</p>' : '') + '</div></div><div class="chevrons" aria-hidden="true"></div></footer>';
+      '<div class="foot-legal"><p class="foot-911">In an emergency, call 911. This website is not monitored.</p><p>&copy; ' + new Date().getFullYear() + ' ' + esc(S.company) + '.' + (S.footer.status === undefined ? ' A 501(c)(3) nonprofit.' : (S.footer.status ? ' ' + esc(S.footer.status) : '')) + (S.footer.builtBy ? ' ' + esc(S.footer.builtBy) : '') + '</p><p>' + esc(S.footer.sample) + '</p>' + (motionOn() || S.welcome ? '<p class="foot-tools">' + (motionOn() ? stillButton('foot-still') : '') + (S.welcome && S.welcome.on !== false ? '<button class="foot-still" type="button" data-welcome>' + I('play') + '<span>Play the welcome again</span></button>' : '') + '</p>' : '') + '</div></div><div class="chevrons" aria-hidden="true"></div></footer>';
   }
 
   function membersDialog() {
@@ -414,7 +428,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-rig],[data-station],[data-ad],[data-ad-pause],[data-topic],[data-open],[data-close],[data-amount],[data-donate],[data-still],[data-gear-zoom],[data-preset],.nav-toggle,.tc-open,.pb-ad,.nav a');
+    var t = e.target.closest('[data-rig],[data-station],[data-ad],[data-ad-pause],[data-topic],[data-open],[data-close],[data-amount],[data-donate],[data-still],[data-gear-zoom],[data-welcome],[data-preset],.nav-toggle,.tc-open,.pb-ad,.nav a');
     if (!t) return;
     if (t.matches('[data-rig]')) {
       state.rig = +t.getAttribute('data-rig');
@@ -439,6 +453,7 @@
     } else if (t.matches('[data-donate]')) { document.getElementById('donate-note').hidden = false; }
     else if (t.matches('[data-still]')) { setStill(!state.still); }
     else if (t.matches('[data-gear-zoom]')) { setZoom(!state.zoom); }
+    else if (t.matches('[data-welcome]')) { welcome(true); }
     else if (t.matches('.nav-toggle')) {
       var nav = document.getElementById('nav'), open = !nav.classList.contains('is-open');
       nav.classList.toggle('is-open', open); t.setAttribute('aria-expanded', open);
@@ -484,6 +499,7 @@
   window.addEventListener('scroll', function () { var h = app.querySelector('.site-header'); if (h) h.classList.toggle('is-stuck', window.scrollY > 48); }, { passive: true });
 
   render();
+  setTimeout(function () { welcome(/[?&]welcome\b/.test(window.location.search)); }, 900);
   if (RAW.templateControls !== false) controls();
   /* cross-fade the hero photos; "Pause motion" and reduced-motion both hold the current one */
   setInterval(function () {

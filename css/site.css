@@ -580,6 +580,49 @@ dialog::backdrop { background: rgba(11, 20, 40, .7); }
   .concept-badge span { display: none; }
 }
 
+/* ---------- the first-visit welcome: the badge burns, the hose puts it out ---------- */
+.wl { width: min(92vw, 520px); max-height: 94vh; margin: auto; padding: 0; border: 1px solid rgba(255, 255, 255, .16); border-radius: 14px; background: radial-gradient(120% 70% at 50% 0%, #1B2848 0%, var(--night) 64%); color: var(--white); overflow: hidden auto; box-shadow: 0 40px 120px rgba(0, 0, 0, .65); }
+.wl:focus { outline: none; }
+/* firelight spills onto the dimmed page behind, and dies with the fire */
+.wl::backdrop { background: radial-gradient(60vmax 50vmax at 50% 46%, rgba(255, 122, 36, calc(.2 * var(--glow, 0))), transparent 70%), rgba(4, 8, 18, .88); }
+.wl-x, .wl-skip { position: absolute; top: 10px; z-index: 5; min-height: 40px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 6px; background: rgba(11, 20, 40, .62); color: var(--white); cursor: pointer; }
+.wl-x { right: 10px; display: grid; place-items: center; width: 40px; padding: 0; }
+.wl-x svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.wl-skip { left: 10px; padding: 6px 12px; font: inherit; font-size: .875rem; font-weight: 600; transition: opacity .3s; }
+.wl.is-out .wl-skip { opacity: 0; pointer-events: none; }
+.wl-stage { position: relative; width: 100%; aspect-ratio: 1 / .8; touch-action: none; transition: margin-top 1s var(--ease) .35s; }
+/* once the fire is out the empty air above the badge closes up */
+.wl.is-out .wl-stage { margin-top: -17%; }
+.wl:not(.is-out):not(.is-static) .wl-stage { cursor: crosshair; }
+.wl-glow { position: absolute; left: 14%; right: 14%; top: 10%; bottom: -4%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 150, 50, .5), rgba(255, 90, 20, .16) 58%, transparent 74%); opacity: var(--glow, 0); }
+.wl-badge { position: absolute; left: 32%; top: 47%; width: 36%; aspect-ratio: 1 / 1; filter: brightness(calc(1 - .55 * var(--heat, 0))) sepia(calc(.6 * var(--heat, 0))) saturate(calc(1 + .4 * var(--heat, 0))) drop-shadow(0 12px 20px rgba(0, 0, 0, .55)); }
+.wl-badge > * { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; }
+/* a gleam crosses the wet badge once the fire is out */
+.wl-badge.has-mask::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, .8) 50%, transparent 62%) no-repeat; background-size: 260% 100%; -webkit-mask: var(--wl-mask) center / contain no-repeat; mask: var(--wl-mask) center / contain no-repeat; mix-blend-mode: screen; }
+.wl.is-out .wl-badge.has-mask::after { animation: wlGleam 1.5s ease 1s 1 both; }
+@keyframes wlGleam { 0% { opacity: 0; background-position: 130% 0; } 15%, 85% { opacity: 1; } 100% { opacity: 0; background-position: -30% 0; } }
+.wl canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.wl-hint { position: absolute; left: 0; right: 0; bottom: -2px; margin: 0; text-align: center; color: rgba(255, 255, 255, .78); font-size: .875rem; transition: opacity .4s; }
+.wl.is-out .wl-hint, .wl.is-aimed .wl-hint { opacity: 0; }
+/* the message is folded away until the fire is out, then the dialog opens up */
+.wl-fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .9s var(--ease); }
+.wl.is-out .wl-fold, .wl.is-static .wl-fold, .wl-fold:focus-within { grid-template-rows: 1fr; }
+.wl-copy { min-height: 0; overflow: hidden; padding: 0 clamp(20px, 6vw, 44px); text-align: center; opacity: 0; transition: opacity .8s ease .25s; }
+.wl-copy::before, .wl-copy::after { content: ""; display: block; height: 18px; }
+.wl-copy::after { height: clamp(24px, 4vw, 34px); }
+.wl.is-out .wl-copy, .wl.is-static .wl-copy, .wl-fold:focus-within .wl-copy { opacity: 1; }
+.wl-copy h2 { font: 400 clamp(1.7rem, 5vw, 2.3rem)/1.05 var(--display); letter-spacing: -.015em; }
+.wl-copy > p { margin-top: 12px; color: var(--on-dusk-2); font-size: 1.0625rem; line-height: 1.5; text-wrap: balance; }
+.wl-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
+.wl-links a { display: inline-block; padding: 8px 14px; border: 1px solid rgba(255, 255, 255, .35); border-radius: 6px; color: var(--white); font-weight: 600; text-decoration: none; }
+.wl-links a:hover { background: rgba(255, 255, 255, .1); }
+.wl-actions { margin-top: 18px; }
+.wl-actions .btn { min-width: min(100%, 240px); }
+.wl-copy > .wl-note { display: inline-block; margin-top: 18px; padding: 5px 10px; border-radius: 4px; background: var(--gold); color: var(--ink); font-size: .8125rem; font-weight: 700; line-height: 1.3; }
+.wl.is-static .wl-stage { aspect-ratio: auto; height: 210px; }
+.wl.is-static .wl-badge { left: calc(50% - 80px); top: 40px; width: 160px; }
+.foot-tools { display: flex; flex-wrap: wrap; gap: 10px; }
+
 /* ---------- background motion: embers, glints and metal sheen ----------
    The layers come first and are always there. The movement follows, and only
    runs when js/fx.js has switched it on (html.fx-on), "Pause motion" has not
@@ -658,6 +701,7 @@ dialog::backdrop { background: rgba(11, 20, 40, .7); }
   html { scroll-behavior: auto; }
   [data-still] { display: none; }
   .hero-img { transition: none; }
+  .wl-fold, .wl-copy, .wl-stage { transition: none; }
   .gear-stage, .gear-name { transition: none; }
   .hero-img { animation: none; }
   .baydoor { animation: none; transform: translateY(-238px); }

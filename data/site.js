@@ -60,6 +60,17 @@ window.SITE = {
   },
   sampleBanner: "Website concept for {company}. This is not the company's official site, and nothing here takes payments or delivers messages.",
 
+  /* The first-visit welcome: the badge burns, a hose stream puts it out, and this message appears.
+     Each visitor sees it once. Change `id` to show a new message to everyone again, or set
+     `on: false` to switch it off. Add ?welcome to the address to play it on demand. */
+  welcome: {
+    on: true, id: "launch",
+    title: "Welcome to our new site.",
+    text: "Everything about {company} in one place: how to join, the rigs, what's coming up and ways to help.",
+    links: [{ label: "Join the company", href: "#join" }, { label: "See the rigs", href: "#apparatus" }, { label: "Support us", href: "#support" }],
+    button: "Take a look around"
+  },
+
   contact: {
     address: "1 Pawnee Avenue",
     cityLine: "Rockaway, NJ 07866",
@@ -133,11 +144,11 @@ window.SITE = {
     /* A computer-generated picture, and said to be one on the page. Replace it with a photo of the
        company's own gear. `name` and `zoom` are measured on this picture: see the template README. */
     gear: {
-      photo: "images/gear/turnout-gear.jpg", width: 1448, height: 1086,
+      photo: "images/gear/gear-white-meadow-lake.jpg", width: 1448, height: 1086,
       alt: "Two sets of tan turnout gear on stands in an apparatus bay, one seen from the front and one from the back. The back of the coat has a name panel across the shoulders and a red cross patch lettered White Meadow Lake Fire Dept.",
       caption: "A computer-generated picture, for layout only. A photo of the company's own gear goes here.",
       namedCaption: "{name}, across the shoulders. A computer-generated picture, for layout only.",
-      name: { blank: "images/gear/name-panel.png", box: [878, 134, 230, 64], arc: "M880 178.4 Q990 161.4 1100 178.4", size: 30, max: 186, color: "#D8C4B1" },
+      name: { blank: "images/gear/gear-white-meadow-lake-name.png", box: [878, 134, 230, 64], arc: "M880 178.4 Q990 161.4 1100 178.4", size: 30, max: 186, color: "#D8C4B1" },
       zoom: [670, 50, 640, 480]
     },
     cta: { label: "Ask about joining", topic: "I want to volunteer" },

@@ -50,6 +50,17 @@ The gear picture in the Join section is computer-generated, and its caption says
 
 Everything is set in `data/site.js`. Photo slots work the same way as in the Larkin Mills template.
 
+## The welcome
+
+The first time someone opens the site, the company's patch is on fire. A hose stream comes in from the corner and knocks the fire down, steam comes off the badge, and the welcome message opens. Visitors can aim the hose with the mouse or a finger; left alone it finds the fire by itself in about five seconds. It is drawn by `js/welcome.js` and the "first-visit welcome" block in `css/site.css`.
+
+- The flames are computed in the browser from the outline of whichever badge the site uses, so a new department's patch burns in its own shape. There is no video or picture file to make.
+- `welcome` in `data/site.js` holds the title, the text, the three links and the button label. On this concept the popup also carries the "Website concept" note.
+- Each visitor sees it once. Change `id` (say from `"launch"` to `"spring-drive"`) to show a new message to everyone again. `on: false` switches it off.
+- Add `?welcome` to the address to play it on demand, or use "Play the welcome again" in the footer.
+- "Skip the fire", the close button, the Esc key and a click outside all get past it.
+- Visitors whose device is set to reduce motion, or who pressed "Pause motion", get the badge and the message with no fire.
+
 ## Hosting
 
-`wrangler.toml` serves this folder as a Cloudflare Worker named `white-meadow-lake-fire-concept`, so the address itself says "concept". Every push to `main` publishes to https://white-meadow-lake-fire-concept.kandyanything.workers.dev. `_headers` and `robots.txt` keep search engines out. Leave the concept labels in place for as long as the link is live.
+`wrangler.toml` serves this folder as a Cloudflare Worker named `white-meadow-lake-fire-concept`, so the address itself says "concept". Every push to `main` publishes to https://white-meadow-lake-fire-concept.kandyanything.workers.dev. `_headers` and `robots.txt` keep search engines out. Pictures are kept by browsers for only five minutes (`_headers`) while they are still being swapped; raise that for a real launch, and give a replaced picture a new file name. Leave the concept labels in place for as long as the link is live.

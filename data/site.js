@@ -60,9 +60,10 @@ window.SITE = {
   },
   sampleBanner: "Website concept for {company}. This is not the company's official site, and nothing here takes payments or delivers messages.",
 
-  /* The first-visit welcome: the badge burns, a hose stream puts it out, and this message appears.
-     Each visitor sees it once. Change `id` to show a new message to everyone again, or set
-     `on: false` to switch it off. Add ?welcome to the address to play it on demand. */
+  /* The welcome: the badge burns, a hose stream puts it out, and this message appears.
+     It opens on every visit until the visitor ticks "Don't show this again". `once: true` shows it
+     a single time instead, `on: false` switches it off, and changing `id` brings it back for
+     everyone who ticked the box. Add ?welcome to the address to play it on demand. */
   welcome: {
     on: true, id: "launch",
     title: "Welcome to our new site.",

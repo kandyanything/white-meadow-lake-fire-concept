@@ -1,4 +1,4 @@
-/* FireWelcome — the first-visit welcome.
+/* FireWelcome — the welcome popup.
    The department's badge is on fire. A hose stream comes in and knocks the fire down,
    and the welcome message appears once it is out. The visitor can aim the hose by
    moving the pointer or a finger; left alone, the hose finds the fire by itself.
@@ -8,7 +8,9 @@
    own shape, and the fire dies exactly where water has landed.
 
    Nothing moves for visitors whose device asks for reduced motion: they get the badge
-   and the message straight away. */
+   and the message straight away.
+
+   It opens on every visit until the visitor ticks "Don't show this again". */
 (function () {
   'use strict';
 
@@ -85,6 +87,7 @@
       '<div class="wl-fold"><div class="wl-copy"><h2 id="wl-h">' + cfg.title + '</h2>' + (cfg.text ? '<p>' + cfg.text + '</p>' : '') +
       (cfg.links && cfg.links.length ? '<ul class="wl-links">' + cfg.links.map(function (l) { return '<li><a href="' + l.href + '" data-wl-close>' + l.label + '</a></li>'; }).join('') + '</ul>' : '') +
       '<div class="wl-actions"><button class="btn btn--gold" type="button" data-wl-close>' + (cfg.button || 'Take a look around') + '</button></div>' +
+      (cfg.again ? '<label class="wl-again"><input type="checkbox" data-wl-again' + (cfg.again.checked ? ' checked' : '') + '><span>' + cfg.again.label + '</span></label>' : '') +
       (cfg.note ? '<p class="wl-note">' + cfg.note + '</p>' : '') + '</div></div>' +
       (still ? '' : '<button class="wl-skip" type="button" data-wl-skip>Skip the fire</button>');
     document.body.appendChild(d);
@@ -94,7 +97,11 @@
       if (t && t.hasAttribute('data-wl-skip')) { if (live && live.finish) live.finish(); return; }
       if (t || e.target === d) close();
     });
-    d.addEventListener('close', function () { if (live && live.d === d) close(); if (cfg.onClose) cfg.onClose(); });
+    d.addEventListener('close', function () {
+      var box = d.querySelector('[data-wl-again]');      /* did the visitor ask not to see it again? */
+      if (live && live.d === d) close();
+      if (cfg.onClose) cfg.onClose(box ? box.checked : null);
+    });
     live = { d: d };
     d.tabIndex = -1;
     if (d.showModal) d.showModal(); else d.setAttribute('open', '');

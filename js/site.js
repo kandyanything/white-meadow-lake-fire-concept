@@ -293,18 +293,22 @@
     return '<nav class="mbar" aria-label="Quick actions"><a href="tel:' + esc(S.contact.nonEmergency.replace(/[^0-9]/g, '')) + '">' + I('phone') + 'Call station</a><a href="#join">' + I('ladder') + 'Join</a><a href="#support">' + I('heart') + 'Donate</a></nav>';
   }
 
-  /* The first-visit welcome (js/welcome.js). Shown once per visitor; `force` plays it again. */
+  /* The welcome (js/welcome.js). It opens on every visit until the visitor ticks "Don't show this again";
+     `force` plays it regardless. With `once: true` in the data it shows a single time instead. */
   function welcome(force) {
     var w = S.welcome, FW = window.FireWelcome;
     if (!w || w.on === false || !FW) return;
-    var key = 'welcome-seen:' + (w.id || 'v1'), seen = false;
-    try { seen = window.localStorage.getItem(key) === '1'; } catch (e) { /* storage blocked: show it */ }
-    if (seen && !force) return;
+    var key = 'welcome-off:' + (w.id || 'v1'), off = false;
+    try { off = window.localStorage.getItem(key) === '1'; } catch (e) { /* storage blocked: show it */ }
+    if (off && !force) return;
     FW.open({
       badge: emblem(), title: esc(w.title), text: esc(w.text || ''), button: esc(w.button || 'Take a look around'), still: state.still,
       links: (w.links || []).map(function (l) { return { href: esc(l.href), label: esc(l.label) }; }),
       note: S.concept ? esc(S.concept.badge + '. ' + S.concept.badgeNote) : esc(w.note || ''),
-      onClose: function () { try { window.localStorage.setItem(key, '1'); } catch (e) { /* it will show again next visit */ } }
+      again: w.once ? null : { label: esc(w.again || "Don't show this again"), checked: off },
+      onClose: function (dont) {
+        try { if (dont || w.once) window.localStorage.setItem(key, '1'); else window.localStorage.removeItem(key); } catch (e) { /* it will show again next visit */ }
+      }
     });
   }
   function conceptMarks() {

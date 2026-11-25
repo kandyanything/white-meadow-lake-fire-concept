@@ -16,7 +16,13 @@
 
    Everything else is a PLACEHOLDER and is tagged "Sample" on the page (see
    `concept.sample` below): call totals, events, the fund drive, services,
-   partner program, drill night, founding history.
+   partner program, drill night, founding history, and all of the newer
+   blocks: the feed captions, the year in numbers, the neighbors, the ice
+   status and guidance, Santa night, house-number signs, the partner report
+   and the figures at the end of the tour.
+
+   The one live thing: weather alerts come straight from the National Weather
+   Service's public feed for the point given in `weather`.
    ========================================================================== */
 window.SITE = {
   town: "White Meadow Lake",
@@ -52,10 +58,15 @@ window.SITE = {
     sample: {
       calls: "The totals are placeholder figures. The three calls listed were reported in local news.",
       events: "Placeholder dates, events and sponsors. The news items are real, from local reports.",
-      support: "A placeholder fund drive. No payment is taken on this page.",
+      support: "A placeholder fund drive and a sample sign offer. No payment is taken on this page.",
       partners: "A proposed partner program. The businesses are invented and the prices are examples.",
       history: "The company's own history goes here. The founding entry is a placeholder.",
-      safety: "General fire safety advice, to be reviewed by the company."
+      safety: "General fire safety advice, to be reviewed by the company.",
+      feed: "Invented captions on the company's photos. On a live site the company's own posts arrive here by themselves.",
+      year: "Placeholder figures.",
+      neighbors: "Invented people, to show the idea. The company's own members go here, with their say-so.",
+      lake: "General ice-safety guidance and a placeholder status, for the company to review and set. The weather alerts are live.",
+      santa: "A demonstration. The route, the stops and the times are invented."
     }
   },
   sampleBanner: "Website concept for {company}. This is not the company's official site, and nothing here takes payments or delivers messages.",
@@ -89,6 +100,45 @@ window.SITE = {
 
   signLines: ["Volunteers needed", "Stop in and ask"],
 
+  /* Live weather alerts for this point, from the National Weather Service's public feed.
+     Nothing to maintain: when the Service issues an alert for the township it appears under the
+     top strip and in the lake section, and it leaves when the alert ends. Add ?alert to the
+     address to see a sample one on a quiet day. */
+  weather: { lat: 40.9237, lon: -74.5107, place: "Rockaway Township", demoEvent: "Winter Weather Advisory" },
+
+  /* The guided tour, for showing the site to the company. Start it from the "Website concept"
+     badge or by adding ?tour to the address. `at` is the id of the section each step points at.
+     SET `offer.price` (your yearly price) and `offer.contact` before you show it. */
+  tour: {
+    button: "Take the 60-second tour",
+    seconds: 7,
+    steps: [
+      { at: "top", title: "Built for Company 5", text: "Your patch, your rigs, your officers, your photos. Here is what this site would do for the company, in about a minute.", action: "welcome", actionLabel: "Play the welcome" },
+      { at: "feed", title: "It updates itself", text: "Keep posting to Facebook and Instagram the way you do now. The posts show up here on their own, so nobody has to learn a website." },
+      { at: "year", title: "Your year, added up", text: "Training and volunteer hours turned into a dollar figure for the fund-drive letter and the township budget meeting." },
+      { at: "join", title: "It recruits", text: "A visitor types a last name and sees it on the coat. The interest form goes straight to the membership chair's phone.", action: "apply", actionLabel: "Open the form" },
+      { at: "neighbors", title: "Faces, not just trucks", text: "People join people. Members shown with their day jobs is the best recruiting page a volunteer company can have." },
+      { at: "lake", title: "Made for a lake company", text: "A status sign an officer changes from a phone, and weather alerts that arrive live from the National Weather Service.", alert: true },
+      { at: "santa", title: "The night everyone visits", text: "On Santa night the map follows the engine, and the whole neighborhood opens the site to see when to come outside." },
+      { at: "support", title: "It raises money", text: "A goal people can watch fill up, monthly giving, a code to print on the mailed letter, and house-number signs ordered online." },
+      { at: "partners", title: "And it pays for itself", text: "Local businesses support the company through the site, and each one gets a monthly report showing what it got for the money.", action: "report", actionLabel: "See a sample report" },
+      { end: true, title: "What it costs the company" }
+    ],
+    offer: {
+      price: 1800,      /* PLACEHOLDER: your yearly price */
+      lines: [
+        "{count} local partners at the prices on this page bring in {total} a year.",
+        "The site, hosting, updates and support cost {price} a year.",
+        "That leaves {left} a year for the company before the first donation."
+      ],
+      note: "Example figures, to be agreed.",
+      qrLabel: "Open it on your own phone",
+      qrText: "Point the camera at the code.",
+      contact: "",      /* PLACEHOLDER: "Your Name, 973-555-0100, you@example.com" */
+      contactBlank: "Your name, phone and email go here."
+    }
+  },
+
   alert: { active: false, text: "", link: null },
 
   hero: {
@@ -111,11 +161,54 @@ window.SITE = {
     items: [
       { icon: "door", title: "Join the company", text: "No experience needed to ask. You must be 18 or older.", action: "See how to join", href: "#join" },
       { icon: "alarm", title: "Check your smoke alarms", text: "One on every level and in every bedroom, tested monthly.", action: "Safety basics", href: "#safety" },
-      { icon: "burn", title: "Stay safe on the ice", text: "No ice is ever completely safe. Know what to do before you go out.", action: "Ice safety", href: "#safety" },
+      { icon: "burn", title: "Stay safe on the ice", text: "No ice is ever completely safe. Know what to do before you go out.", action: "Ice safety", href: "#lake" },
       { icon: "report", title: "Ask a question", text: "Send a note to the firehouse. For emergencies, call 911.", action: "Contact us", href: "#contact" },
       { icon: "hall", title: "See what's coming up", text: "Drills, open houses and events at the firehouse.", action: "Events", href: "#events" },
       { icon: "hydrant", title: "Support the company", text: "Donations and local partners help pay for training and gear.", action: "Ways to give", href: "#support" }
     ]
+  },
+
+  /* What the company posted lately. On a live site these come from the company's Facebook and
+     Instagram pages by themselves; here the captions are invented. */
+  feed: {
+    title: "Latest from the firehouse",
+    text: "Whatever the company posts on Facebook or Instagram shows up here on its own.",
+    items: [
+      { from: "Facebook", when: "2 days ago", photo: "images/hero/drill-at-dusk.jpg", pos: "50% 60%", alt: "Members gathered around Engine 51 at the boat launch at dusk", text: "At the boat launch with Engine 51 until the light ran out." },
+      { from: "Instagram", when: "Last week", photo: "images/rigs/rescue-boat.jpg", alt: "Four members in the rescue boat on the lake", text: "Boat crew out on the lake for training." },
+      { from: "Facebook", when: "November 14", photo: "images/photos/color-guard.jpg", alt: "Members in dress uniform carry the company flag and the American flag", text: "The color guard, ready to step off." }
+    ],
+    more: { label: "Follow the company on Facebook", href: "https://www.facebook.com/p/White-Meadow-Lake-Fire-Company-5-100057396461612/" }
+  },
+
+  /* The year added up. `worth` multiplies the volunteer hours by a dollar value for an hour of
+     volunteer time: use the current published figure. */
+  year: {
+    title: "What a year of volunteering adds up to",
+    text: "Nobody at the Pawnee Avenue firehouse is paid. This is what the township got anyway.",
+    stats: [
+      { n: 3140, label: "hours of training" },
+      { n: 9870, label: "volunteer hours in all" },
+      { n: 42, label: "active members" },
+      { n: 365, label: "days a year someone is on call" }
+    ],
+    worth: { hours: 9870, rate: 34, text: "{hours} volunteer hours at {rate} an hour: service the township's taxpayers did not have to pay for." }
+  },
+
+  /* Members with their day jobs. Invented here. Use real members only with their say-so; add
+     `photo:` to any of them to replace the initials. */
+  neighbors: {
+    title: "The people on the truck live down the street.",
+    text: "They have day jobs, kids and lawns to mow, and a pager on the nightstand.",
+    items: [
+      { name: "Dana R.", job: "Middle-school science teacher", role: "firefighter", since: 2019 },
+      { name: "Marcus T.", job: "Electrician", role: "engine driver", since: 2011 },
+      { name: "Priya S.", job: "Hospital nurse", role: "firefighter", since: 2021 },
+      { name: "Tom B.", job: "Retired mail carrier", role: "life member", since: 1994 },
+      { name: "Jenna K.", job: "College student", role: "probationary member", since: 2026 },
+      { name: "Luis M.", job: "Diesel mechanic", role: "ice and water rescue", since: 2015 }
+    ],
+    cta: { label: "Add your name to the list", href: "#join" }
   },
 
   calls: {
@@ -152,7 +245,17 @@ window.SITE = {
       name: { blank: "images/gear/gear-white-meadow-lake-name.png", box: [878, 134, 230, 64], arc: "M880 178.4 Q990 161.4 1100 178.4", size: 30, max: 186, color: "#D8C4B1" },
       zoom: [670, 50, 640, 480]
     },
-    cta: { label: "Ask about joining", topic: "I want to volunteer" },
+    cta: { label: "Ask a question first", topic: "I want to volunteer" },
+    /* The interest form. The drill-night dates are placeholders. */
+    apply: {
+      button: "Tell us you're interested",
+      title: "Tell us you're interested",
+      text: "It takes two minutes. A member calls you back, and you can watch a drill before you decide anything.",
+      interests: ["Fighting fires", "Ice and water rescue", "Driving the engines", "Helping behind the scenes"],
+      visits: { label: "Want to come to a drill night? (sample dates)", none: "Not yet, call me first", options: ["Monday, December 7, 7 PM", "Monday, December 14, 7 PM", "Monday, December 21, 7 PM"] },
+      submit: "Send it",
+      done: "Demo only: nothing was sent. On the live site this goes straight to the membership chair's phone and inbox, and you get a text to confirm."
+    },
     perks: ["18 or older", "In good physical shape", "Ready to train, drill and answer alarms"],
     steps: [
       { title: "Stop by", text: "Visit the firehouse at 1 Pawnee Avenue and meet the members." },
@@ -227,13 +330,50 @@ window.SITE = {
     cta: { label: "Ask a fire safety question", topic: "Fire safety question" }
   },
 
+  /* Ice and water. `status.level` is "off" (red), "caution" (amber) or "ok" (green). The guide rows
+     are [inches for the drawing, label, what it holds, true for the stay-off row]. */
+  lake: {
+    title: "On the ice, and on the water",
+    text: "Company 5 keeps a water and ice rescue team for the lake. Most of its calls start with someone who thought the ice would hold.",
+    status: { level: "off", kicker: "Lake ice today", label: "Stay off the ice", text: "The lake is not safe to walk on. Keep dogs on a leash near the shore.", updated: "An officer sets this sign from a phone." },
+    guideTitle: "How thick is thick enough?",
+    guide: [[3, "Under 4 in", "Stay off", true], [4, "4 in", "On foot, ice fishing"], [6, "5 to 7 in", "Snowmobile or small ATV"], [10, "8 to 12 in", "Car or small pickup"]],
+    guideNote: "For new, clear ice only. White or snow-covered ice holds about half as much, and thickness changes from one spot to the next.",
+    seeTitle: "If someone goes through",
+    see: ["Call 911 and say exactly where they are.", "Stay on shore. A rescuer who walks out becomes the second person in the water.", "Reach or throw: a branch, a rope, a cooler, anything that floats."],
+    selfTitle: "If it is you",
+    self: ["Keep your winter clothes on. They hold air and help you float.", "Turn back the way you came. That ice held you a moment ago.", "Kick hard, pull yourself flat onto the ice, then roll away from the hole."]
+  },
+
+  /* Santa night. On the real night the map follows a phone riding on the engine; here the engine
+     runs a made-up loop. Delete `santa` after the holidays and it disappears. */
+  santa: {
+    title: "Santa is riding the engine.",
+    text: "On the night, this map follows the truck, so you know when to bring the kids to the curb.",
+    when: "Saturday, December 19, from 5 PM",
+    water: "White Meadow Lake",
+    loopSeconds: 52,
+    stops: [
+      { name: "The firehouse, Pawnee Avenue", time: "5:00" },
+      { name: "North shore", time: "5:20" },
+      { name: "East shore", time: "5:45" },
+      { name: "South shore and the beach", time: "6:10" },
+      { name: "West shore", time: "6:35" },
+      { name: "Back at the firehouse", time: "7:00" }
+    ],
+    sponsor: "Three Forks Auto Body",
+    mapAlt: "A map of the lake with the engine's route around it and five numbered stops",
+    note: "Demonstration. The engine on this map is following a made-up loop."
+  },
+
   events: {
     title: "At the firehouse",
     items: [
-      { month: "Dec", day: "7", title: "Drill night", meta: "Placeholder. The company's drill schedule goes here." },
-      { month: "Dec", day: "19", title: "Santa visits the neighborhood", meta: "Placeholder. Route and times would be posted here.", sponsor: "Three Forks Auto Body" },
-      { month: "Jan", day: "9", title: "Open house at the firehouse", meta: "Placeholder. Meet the members and see Engine 51 up close." },
-      { month: "Feb", day: "6", title: "Ice rescue drill on the lake", meta: "Placeholder. Spectators welcome from the shore.", sponsor: "Kettle & Crumb Bakery" }
+      /* `date` and `hours` put an "Add to calendar" button on the event. */
+      { month: "Dec", day: "7", date: "2026-12-07T19:00", hours: 2, title: "Drill night", meta: "Placeholder. The company's drill schedule goes here." },
+      { month: "Dec", day: "19", date: "2026-12-19T17:00", hours: 2, title: "Santa visits the neighborhood", meta: "Placeholder. Follow the engine on the map below.", sponsor: "Three Forks Auto Body" },
+      { month: "Jan", day: "9", date: "2027-01-09T11:00", hours: 3, title: "Open house at the firehouse", meta: "Placeholder. Meet the members and see Engine 51 up close." },
+      { month: "Feb", day: "6", date: "2027-02-06T10:00", hours: 2, title: "Ice rescue drill on the lake", meta: "Placeholder. Spectators welcome from the shore.", sponsor: "Kettle & Crumb Bakery" }
     ],
     news: [
       { date: "June 10, 2026", title: "Second-alarm fire on White Meadow Road", text: "Engine 51's crew attacked heavy fire at the rear of a home. No injuries were reported." },
@@ -245,8 +385,19 @@ window.SITE = {
   support: {
     title: "Volunteers give the time. Neighbors help with the rest.",
     text: "Donations to {company} help pay for training, gear and the firehouse.",
-    fund: { name: "Fund drive (placeholder)", raised: 18400, goal: 30000, note: "A real drive would name what the money buys." },
+    fund: { name: "2027 fund drive: a thermal camera for each engine", raised: 18400, goal: 30000, note: "212 households so far. A thermal camera lets a crew see through smoke to find a person, or a fire hidden in a wall." },
     amounts: [25, 50, 100, 250],
+    monthly: true,
+    /* A code that opens this section on a phone. It is made in the browser, so it always points at
+       wherever the site is hosted. */
+    qr: { label: "Scan to give", text: "Print this code on the fund-drive letter. It opens this page on any phone." },
+    signs: {
+      title: "Help us find your house in the dark",
+      text: "A reflective green number sign for the end of the driveway, readable from both directions at night.",
+      label: "Your house number", sample: "27",
+      cta: "Order a sign for $20",
+      done: "Demo only. On a live site this takes the order and payment, and the company gets a list of signs to make."
+    },
     other: ["Mail a check to the firehouse at 1 Pawnee Avenue", "Ask your employer to match your gift", "Give in memory of a member"]
   },
 
@@ -262,6 +413,15 @@ window.SITE = {
       { name: "Hose partner", price: "$350 a year", items: ["Name on the partner wall", "A thank-you in the annual mailer"] }
     ],
     cta: { label: "Ask about partnering", topic: "Community partnership" },
+    /* The monthly report each partner would get. The numbers are generated for show: `views` is
+       roughly how often each level is seen in a month. */
+    report: {
+      button: "See a sample partner report", kicker: "Partner report", month: "October 2026",
+      note: "Invented figures for an invented business.",
+      views: { Engine: 4000, Truck: 1700, Hose: 900 }, events: "2",
+      allTitle: "Every partner this month",
+      foot: "Each partner gets its own report by email on the first of the month."
+    },
     top: [
       { id: "foundry-road-hardware", active: true, name: "Foundry Road Hardware", logo: "images/partners/foundry-road-hardware.svg", mark: ["Foundry Road", "Hardware"], headline: "Everything for the house since 1961", sub: "Paint, plumbing, keys cut while you wait.", cta: "Visit the store", url: "#partners", theme: { from: "#12372A", to: "#1F6B4C", accent: "#F2C14E" } },
       { id: "three-forks-auto-body", active: true, name: "Three Forks Auto Body", logo: "images/partners/three-forks-auto-body.svg", mark: ["Three Forks", "Auto Body"], headline: "Collision repair, done right the first time", sub: "Free estimates. We work with every insurer.", cta: "Get an estimate", url: "#partners", theme: { from: "#10233F", to: "#1F4E8C", accent: "#FF8A3D" } },

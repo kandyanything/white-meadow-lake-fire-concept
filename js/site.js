@@ -6,7 +6,7 @@
   var app = document.getElementById('app');
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var state = { rig: 0, station: 0, ad: 0, adPaused: reduced, first: true, coat: '', amount: null, still: false, zoom: false, slide: 0 };
-  var S, FX = window.FireFX;
+  var S, FX = window.FireFX, P = window.FirePlus;
   try { state.still = window.localStorage.getItem('fx-still') === '1'; } catch (e) { /* storage can be blocked: start with motion on */ }
 
   /* ---------- background motion: embers and glints behind the dark sections ---------- */
@@ -54,11 +54,11 @@
   function emblem() { return S.emblemImage ? '<img class="art art-emblem" src="' + esc(S.emblemImage) + '" alt="">' : A.emblem(S); }
   function header() {
     var nav = [['Join', '#join']].concat(S.stations && S.stations.items && S.stations.items.length ? [['Stations', '#stations']] : [], [['Apparatus', '#apparatus'], ['Officers', '#officers'], ['Safety', '#safety'], ['Events', '#events'], ['Support us', '#support'], ['Contact', '#contact']]);
-    return (S.sampleBanner ? '<div class="sample-bar"><div class="wrap">' + esc(S.sampleBanner) + '</div></div>' : '') +
+    return (S.sampleBanner ? '<div class="sample-bar"><div class="wrap">' + esc(S.sampleBanner) + (S.concept ? '' : P.tourButton(S)) + '</div></div>' : '') +
       '<div class="strip"><div class="wrap"><strong>Emergency? Call 911.</strong><div class="strip-right">' +
       '<a href="tel:' + esc(S.contact.nonEmergency.replace(/[^0-9]/g, '')) + '">Non-emergency: ' + esc(S.contact.nonEmergency) + '</a>' +
       '<button type="button" data-open="members">' + I('lock') + 'Members</button></div></div></div>' +
-      (S.alert && S.alert.active ? '<div class="alert" role="status"><div class="wrap">' + I('burn') + '<p>' + esc(S.alert.text) + (S.alert.link ? ' <a href="' + esc(S.alert.link.href) + '">' + esc(S.alert.link.label) + '</a>' : '') + '</p></div></div>' : '') +
+      (S.alert && S.alert.active ? '<div class="alert" role="status"><div class="wrap">' + I('burn') + '<p>' + esc(S.alert.text) + (S.alert.link ? ' <a href="' + esc(S.alert.link.href) + '">' + esc(S.alert.link.label) + '</a>' : '') + '</p></div></div>' : '') + P.alertSlot(S) +
       '<header class="site-header"><div class="wrap">' +
       '<a class="brand" href="#top">' + emblem() + '<span><b>' + esc(S.company) + '</b><span>' + esc(S.tagline) + '</span></span></a>' +
       '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">' + I('menu') + 'Menu</button>' +
@@ -189,7 +189,7 @@
     return '<section class="band band--dusk" id="join" aria-labelledby="join-h">' + sparks('dusk') + '<div class="wrap">' +
       '<div class="join-top' + (photo ? ' join-top--photo' : '') + '"><div class="join-copy"><h2 id="join-h">' + esc(j.title) + '</h2><p class="lede">' + esc(j.text) + '</p>' +
       '<div class="coat-try">' + (typing ? '<label for="coat-name">' + esc(j.coatLabel) + '</label>' : '') + '<div class="coat-row">' + (typing ? '<input id="coat-name" type="text" maxlength="14" autocomplete="family-name" placeholder="Last name" value="' + esc(state.coat) + '">' : '') +
-      topicLink(j.cta.label, j.cta.topic, 'btn btn--gold') + '</div></div>' +
+      (j.apply ? P.applyButton(S) + topicLink(j.cta.label, j.cta.topic, 'link') : topicLink(j.cta.label, j.cta.topic, 'btn btn--gold')) + '</div></div>' +
       '<ul class="perks">' + j.perks.map(function (p) { return '<li>' + I('check') + esc(p) + '</li>'; }).join('') + '</ul></div>' +
       (photo ? gearFigure(j.gear) : '<div class="join-coat" id="coat">' + A.coat(S, name) + '</div>') + '</div>' +
       '<div class="join-mid' + (j.film ? '' : ' join-mid--steps') + '">' + (j.film ? '<figure class="film"><video controls playsinline preload="metadata" poster="' + esc(j.film.poster) + '"><source src="' + esc(j.film.src) + '" type="video/mp4"></video><figcaption>' + esc(j.film.caption) + '</figcaption></figure>' : '') +
@@ -258,7 +258,7 @@
   function events() {
     var e = S.events;
     return '<section class="band band--concrete" id="events" aria-labelledby="ev-h"><div class="wrap events-grid"><div><div class="head"><h2 id="ev-h">' + esc(e.title) + '</h2></div><ul>' +
-      e.items.map(function (x) { return '<li class="event"><time><span>' + esc(x.month) + '</span><b>' + esc(x.day) + '</b></time><div><strong>' + esc(x.title) + '</strong><p>' + esc(x.meta) + '</p>' + (x.sponsor ? '<p class="event-sponsor">Sponsored by <b>' + esc(x.sponsor) + '</b></p>' : '') + '</div></li>'; }).join('') + '</ul></div>' +
+      e.items.map(function (x, i) { return '<li class="event"><time><span>' + esc(x.month) + '</span><b>' + esc(x.day) + '</b></time><div><strong>' + esc(x.title) + '</strong><p>' + esc(x.meta) + '</p>' + (x.sponsor ? '<p class="event-sponsor">Sponsored by <b>' + esc(x.sponsor) + '</b></p>' : '') + P.calendarButton(S, i) + '</div></li>'; }).join('') + '</ul></div>' +
       '<div class="news"><h3>News from the company</h3><ul>' + e.news.map(function (n) { return '<li><time>' + esc(n.date) + '</time><strong>' + esc(n.title) + '</strong><p>' + esc(n.text) + '</p></li>'; }).join('') + '</ul></div></div></section>';
   }
 
@@ -267,10 +267,10 @@
     return '<section class="band band--accent" id="support" aria-labelledby="sup-h">' + sparks('accent') + '<div class="wrap support-grid"><div><h2 id="sup-h">' + esc(s.title) + '</h2><p class="lede">' + esc(s.text) + '</p>' +
       '<div class="card fund"><h3>' + esc(f.name) + '</h3><div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-label="Fund drive progress"><i style="width:' + pct + '%"></i></div>' +
       '<div class="fund-nums"><span><b>' + money(f.raised) + '</b> raised</span><span>of ' + money(f.goal) + '</span></div><p class="fund-note">' + esc(f.note) + '</p>' +
-      '<div class="amounts" role="group" aria-label="Gift amount">' + s.amounts.map(function (a) { return '<button class="amount" type="button" data-amount="' + a + '" aria-pressed="' + (state.amount === a) + '">' + money(a) + '</button>'; }).join('') + '</div>' +
+      P.freq(S) + '<div class="amounts" role="group" aria-label="Gift amount">' + s.amounts.map(function (a) { return '<button class="amount" type="button" data-amount="' + a + '" aria-pressed="' + (state.amount === a) + '">' + money(a) + '</button>'; }).join('') + '</div>' +
       '<button class="btn btn--dusk" type="button" data-donate>' + I('heart') + '<span>' + (state.amount ? 'Donate ' + money(state.amount) : 'Donate') + '</span></button>' +
-      '<p class="demo-note" id="donate-note" hidden>Demo only. On a live site this button opens the company\'s payment page.</p></div></div>' +
-      '<div class="support-side">' + (s.hall ? '<div class="card hall"><h3>' + esc(s.hall.name) + '</h3><p>' + esc(s.hall.text) + '</p>' + topicLink(s.hall.cta.label, s.hall.cta.topic, 'btn btn--gold') + '</div>' : '') +
+      '<p class="demo-note" id="donate-note" hidden>Demo only. On a live site this button opens the company\'s payment page.</p>' + P.giveQr(S) + '</div></div>' +
+      '<div class="support-side">' + (s.hall ? '<div class="card hall"><h3>' + esc(s.hall.name) + '</h3><p>' + esc(s.hall.text) + '</p>' + topicLink(s.hall.cta.label, s.hall.cta.topic, 'btn btn--gold') + '</div>' : '') + P.signs(S) +
       '<div class="other"><h3>Other ways to give</h3><ul>' + s.other.map(function (x) { return '<li>' + I('check') + '<span>' + esc(x) + '</span></li>'; }).join('') + '</ul></div></div></div></section>';
   }
 
@@ -279,7 +279,7 @@
     return '<section class="band" id="partners" aria-labelledby="par-h"><div class="wrap"><div class="head"><h2 id="par-h">' + esc(p.title) + '</h2><p class="lede">' + esc(p.text) + '</p></div>' +
       '<ul class="tiers">' + p.tiers.map(function (t) { return '<li class="tier"><h3>' + esc(t.name) + '</h3><p class="price">' + esc(t.price) + '</p><ul>' + t.items.map(function (x) { return '<li>' + I('check') + '<span>' + esc(x) + '</span></li>'; }).join('') + '</ul></li>'; }).join('') + '</ul>' +
       '<h3 class="wall-title">This year\'s partners</h3><ul class="wall">' + p.wall.map(function (w, i) { if (w.open) return '<li class="is-open"><div><b>' + esc(w.name) + '</b><span>' + esc(w.tier) + ' partner</span></div></li>'; return '<li style="--i:' + i + '"' + (w.logo ? ' class="has-logo"><img class="wall-logo" src="' + esc(w.logo) + '" alt="" width="56" height="56" loading="lazy"' : '') + '><div><b>' + esc(w.name) + '</b><span>' + esc(w.tier) + ' partner</span></div></li>'; }).join('') + '</ul>' +
-      '<div class="partners-foot"><p>' + esc(p.disclosure) + '</p>' + topicLink(p.cta.label, p.cta.topic, 'btn') + '</div></div></section>';
+      '<div class="partners-foot"><p>' + esc(p.disclosure) + ' ' + P.reportButton(S) + '</p>' + topicLink(p.cta.label, p.cta.topic, 'btn') + '</div></div></section>';
   }
 
   function gallery() {
@@ -319,7 +319,7 @@
       var sec = document.getElementById(id), h = sec && sec.querySelector('h2');
       if (h) h.insertAdjacentHTML('afterend', '<p class="sample-tag"><b>Sample</b> ' + esc(c.sample[id]) + '</p>');
     });
-    document.body.insertAdjacentHTML('beforeend', '<aside class="concept-badge" id="concept-badge" aria-label="About this page"><b>' + esc(c.badge) + '</b><span>' + esc(c.badgeNote) + '</span></aside>');
+    document.body.insertAdjacentHTML('beforeend', '<aside class="concept-badge" id="concept-badge" aria-label="About this page"><b>' + esc(c.badge) + '</b><span>' + esc(c.badgeNote) + '</span>' + P.tourButton(S) + '</aside>');
   }
   function jsonLd() {
     if (S.concept) { var old = document.getElementById('ld'); if (old) old.remove(); return; }
@@ -399,10 +399,11 @@
   function render() {
     S = resolve(RAW);
     theme();
-    app.innerHTML = header() + '<main id="main">' + hero() + partnerBanner() + tasks() + stations() + calls() + join() + apparatus() + officers() + safety() + events() + support() + partners() + gallery() + history() + contact() + '</main>' + footer() + mobileBar() + membersDialog();
+    app.innerHTML = header() + '<main id="main">' + hero() + partnerBanner() + tasks() + P.feed(S) + stations() + calls() + P.year(S) + join() + P.neighbors(S) + apparatus() + officers() + safety() + P.lake(S, sparks('dusk')) + events() + P.santa(S, sparks('dusk')) + support() + partners() + gallery() + history() + contact() + '</main>' + footer() + mobileBar() + membersDialog() + P.dialogs(S);
     jsonLd();
     setTimeout(function () { app.querySelectorAll('.hero-img[data-src]').forEach(function (im) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); }); }, 1500);
     conceptMarks();
+    P.mount(app, S);
     fitGearName();
     state.first = false;
     var root = document.documentElement, on = motionOn();
@@ -503,7 +504,8 @@
   window.addEventListener('scroll', function () { var h = app.querySelector('.site-header'); if (h) h.classList.toggle('is-stuck', window.scrollY > 48); }, { passive: true });
 
   render();
-  setTimeout(function () { welcome(/[?&]welcome\b/.test(window.location.search)); }, 900);
+  /* ?tour starts the guided tour instead of the welcome */
+  setTimeout(function () { if (/[?&]tour\b/.test(window.location.search)) P.tour(); else welcome(/[?&]welcome\b/.test(window.location.search)); }, 900);
   if (RAW.templateControls !== false) controls();
   /* cross-fade the hero photos; "Pause motion" and reduced-motion both hold the current one */
   setInterval(function () {

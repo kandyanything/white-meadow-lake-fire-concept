@@ -29,7 +29,7 @@ def main():
         if os.path.exists(os.path.join(ROOT, path)):
             assets[path] = data_uri(path)
             data = data.replace('"%s"' % path, '__ASSET["%s"]' % path)
-    scripts = ['window.__ASSET=' + json.dumps(assets) + ';\n' + data, read('js/art.js'), read('js/fx.js'), read('js/welcome.js'), read('js/site.js')]
+    scripts = ['window.__ASSET=' + json.dumps(assets) + ';\n' + data, read('js/art.js'), read('js/fx.js'), read('js/welcome.js'), read('js/plus.js'), read('js/site.js')]
     for chunk in scripts:
         assert '</script' not in chunk.lower()
     html = re.sub(r'<link rel="(?:icon|apple-touch-icon)"[^>]*>\n', '', html)   # the single file travels without its icon files

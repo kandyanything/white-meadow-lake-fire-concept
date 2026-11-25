@@ -62,6 +62,29 @@ When someone opens the site, the company's patch is on fire. A hose stream comes
 - "Skip the fire", the close button, the Esc key and a click outside all get past it.
 - Visitors whose device is set to reduce motion, or who pressed "Pause motion", get the badge and the message with no fire.
 
+## More sections and tools (all sample content, except the weather alerts)
+
+All of these live in `js/plus.js` and the two "more:" blocks in `css/site.css`. Each is switched on by its entry in `data/site.js`; delete the entry and the block disappears.
+
+| Entry in `data/site.js` | What visitors get | What it needs before it is real |
+| --- | --- | --- |
+| `feed` | The department's latest social posts, with photos | A connection to its Facebook and Instagram pages. Until then the posts are typed into the data file. |
+| `year` | Training and volunteer hours, and their dollar value to taxpayers | The department's own figures, and the current value of a volunteer hour in `worth.rate` |
+| `neighbors` | Members shown with their day jobs | Real members, with their say-so. Add `photo:` to replace the initials. |
+| `lake` | A status sign, an ice-thickness guide and what to do if someone goes through | The department's review of the wording. `status.level` is `off`, `caution` or `ok`. |
+| `weather` | Live alerts from the National Weather Service under the top strip | Only the coordinates. Add `?alert` to the address to see a sample on a quiet day. |
+| `santa` | A map that follows the engine on Santa night | A phone on the engine sharing its position. Until then the engine runs a made-up loop. |
+| `support.monthly`, `support.qr` | Monthly giving and a scan-to-give code for the mailed letter | A payment page. The code is made in the browser and always points at wherever the site is hosted. |
+| `support.signs` | Reflective house-number signs with a live preview | Order taking and payment |
+| `join.apply` | The "tell us you're interested" form | Delivery to the membership chair by email and text |
+| `partners.report` | A sample of the monthly report each partner gets | Counting of views and clicks. The numbers shown are generated for show. |
+| `date` on an event | An "Add to calendar" button | Nothing. It works now. |
+| `tour` | A guided tour of the site for showing it to the company | Your price in `tour.offer.price` and your details in `tour.offer.contact` |
+
+On this concept every one of these carries invented content and a Sample tag, apart from the weather alerts, which are live for Rockaway Township. Nothing takes a payment or sends a message.
+
+The tour starts from the "Website concept" badge, or by adding `?tour` to the address. It moves on by itself every `tour.seconds`, waits while the mouse is on the card, and ends on a panel that adds up the partner wall (`partners.wall` at the `partners.tiers` prices) against your price.
+
 ## Hosting
 
 `wrangler.toml` serves this folder as a Cloudflare Worker named `white-meadow-lake-fire-concept`, so the address itself says "concept". Every push to `main` publishes to https://white-meadow-lake-fire-concept.kandyanything.workers.dev. `_headers` and `robots.txt` keep search engines out. Pictures are kept by browsers for only five minutes (`_headers`) while they are still being swapped; raise that for a real launch, and give a replaced picture a new file name. Leave the concept labels in place for as long as the link is live.

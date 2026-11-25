@@ -1,0 +1,9 @@
+# Cloudflare Worker serving this folder as a static site.
+# The name puts "concept" in the web address, so the link cannot pass for the company's own site.
+name = "wml-fire-co5-concept"
+compatibility_date = "2026-11-24"
+workers_dev = true
+
+[assets]
+directory = "./"
+not_found_handling = "404-page"

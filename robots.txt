@@ -1,0 +1,3 @@
+# Sample site: keep search engines out. Delete this file for a real department.
+User-agent: *
+Disallow: /

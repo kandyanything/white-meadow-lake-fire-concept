@@ -83,7 +83,7 @@ All of these live in `js/plus.js` and the two "more:" blocks in `css/site.css`. 
 
 On this concept every one of these carries invented content and a Sample tag, apart from the weather alerts, which are live for Rockaway Township. Nothing takes a payment or sends a message.
 
-The tour starts from the "Website concept" badge, or by adding `?tour` to the address. It moves on by itself every `tour.seconds`, waits while the mouse is on the card, and ends on a panel that adds up the partner wall (`partners.wall` at the `partners.tiers` prices) against your price.
+The tour starts from the "Website concept" badge, from the link in the footer, or by adding `?tour` to the address. A visitor can close the badge with its X; it stays closed until they close the browser tab, and the bar across the top and the Sample tags stay. It moves on by itself every `tour.seconds`, waits while the mouse is on the card, and ends on a panel that adds up the partner wall (`partners.wall` at the `partners.tiers` prices) against your price.
 
 ## Hosting
 

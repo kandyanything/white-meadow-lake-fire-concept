@@ -319,7 +319,10 @@
       var sec = document.getElementById(id), h = sec && sec.querySelector('h2');
       if (h) h.insertAdjacentHTML('afterend', '<p class="sample-tag"><b>Sample</b> ' + esc(c.sample[id]) + '</p>');
     });
-    document.body.insertAdjacentHTML('beforeend', '<aside class="concept-badge" id="concept-badge" aria-label="About this page"><b>' + esc(c.badge) + '</b><span>' + esc(c.badgeNote) + '</span>' + P.tourButton(S) + '</aside>');
+    /* the visitor can close the badge; it stays closed until the browser tab is closed */
+    var shut = false;
+    try { shut = window.sessionStorage.getItem('concept-badge-off') === '1'; } catch (e) { /* storage blocked: show it */ }
+    if (!shut) document.body.insertAdjacentHTML('beforeend', '<aside class="concept-badge" id="concept-badge" aria-label="About this page"><b>' + esc(c.badge) + '</b><span>' + esc(c.badgeNote) + '</span>' + P.tourButton(S) + '<button class="badge-x" type="button" data-badge-close aria-label="Hide this label">' + I('close') + '</button></aside>');
   }
   function jsonLd() {
     if (S.concept) { var old = document.getElementById('ld'); if (old) old.remove(); return; }
@@ -362,7 +365,7 @@
       '<div class="foot-col"><h3>The company</h3><ul><li><a href="#join">Join</a></li>' + (S.stations && S.stations.items && S.stations.items.length ? '<li><a href="#stations">Stations</a></li>' : '') + '<li><a href="#apparatus">Apparatus</a></li><li><a href="#officers">Officers</a></li><li><a href="#history">History</a></li></ul></div>' +
       '<div class="foot-col"><h3>For residents</h3><ul><li><a href="#safety">Fire safety</a></li><li><a href="#events">Events</a></li><li><a href="#support">Donate</a></li><li><a href="#partners">Partners</a></li></ul></div>' +
       '<div class="foot-col"><h3>Follow and sign in</h3><ul>' + c.social.map(function (s) { return '<li><a href="' + esc(s.url) + '">' + esc(s.label) + '</a></li>'; }).join('') + '<li><button type="button" data-open="members">Members\' area</button></li></ul></div></div>' +
-      '<div class="foot-legal"><p class="foot-911">In an emergency, call 911. This website is not monitored.</p><p>&copy; ' + new Date().getFullYear() + ' ' + esc(S.company) + '.' + (S.footer.status === undefined ? ' A 501(c)(3) nonprofit.' : (S.footer.status ? ' ' + esc(S.footer.status) : '')) + (S.footer.builtBy ? ' ' + esc(S.footer.builtBy) : '') + '</p><p>' + esc(S.footer.sample) + '</p>' + (motionOn() || S.welcome ? '<p class="foot-tools">' + (motionOn() ? stillButton('foot-still') : '') + (S.welcome && S.welcome.on !== false ? '<button class="foot-still" type="button" data-welcome>' + I('play') + '<span>Play the welcome again</span></button>' : '') + '</p>' : '') + '</div></div><div class="chevrons" aria-hidden="true"></div></footer>';
+      '<div class="foot-legal"><p class="foot-911">In an emergency, call 911. This website is not monitored.</p><p>&copy; ' + new Date().getFullYear() + ' ' + esc(S.company) + '.' + (S.footer.status === undefined ? ' A 501(c)(3) nonprofit.' : (S.footer.status ? ' ' + esc(S.footer.status) : '')) + (S.footer.builtBy ? ' ' + esc(S.footer.builtBy) : '') + '</p><p>' + esc(S.footer.sample) + '</p>' + (motionOn() || S.welcome || S.tour ? '<p class="foot-tools">' + (motionOn() ? stillButton('foot-still') : '') + (S.welcome && S.welcome.on !== false ? '<button class="foot-still" type="button" data-welcome>' + I('play') + '<span>Play the welcome again</span></button>' : '') + (S.tour ? '<button class="foot-still" type="button" data-tour>' + I('play') + '<span>' + esc(S.tour.button || 'Take the tour') + '</span></button>' : '') + '</p>' : '') + '</div></div><div class="chevrons" aria-hidden="true"></div></footer>';
   }
 
   function membersDialog() {
@@ -433,7 +436,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-rig],[data-station],[data-ad],[data-ad-pause],[data-topic],[data-open],[data-close],[data-amount],[data-donate],[data-still],[data-gear-zoom],[data-welcome],[data-preset],.nav-toggle,.tc-open,.pb-ad,.nav a');
+    var t = e.target.closest('[data-rig],[data-station],[data-ad],[data-ad-pause],[data-topic],[data-open],[data-close],[data-amount],[data-donate],[data-still],[data-gear-zoom],[data-welcome],[data-badge-close],[data-preset],.nav-toggle,.tc-open,.pb-ad,.nav a');
     if (!t) return;
     if (t.matches('[data-rig]')) {
       state.rig = +t.getAttribute('data-rig');
@@ -459,6 +462,10 @@
     else if (t.matches('[data-still]')) { setStill(!state.still); }
     else if (t.matches('[data-gear-zoom]')) { setZoom(!state.zoom); }
     else if (t.matches('[data-welcome]')) { welcome(true); }
+    else if (t.matches('[data-badge-close]')) {
+      var badge = document.getElementById('concept-badge'); if (badge) badge.parentNode.removeChild(badge);
+      try { window.sessionStorage.setItem('concept-badge-off', '1'); } catch (err) { /* it comes back on the next page load */ }
+    }
     else if (t.matches('.nav-toggle')) {
       var nav = document.getElementById('nav'), open = !nav.classList.contains('is-open');
       nav.classList.toggle('is-open', open); t.setAttribute('aria-expanded', open);
